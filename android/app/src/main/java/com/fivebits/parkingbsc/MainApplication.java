@@ -1,4 +1,4 @@
-package com.bsc;
+package com.fivebits.parkingbsc;
 
 import android.app.Application;
 import android.content.Context;

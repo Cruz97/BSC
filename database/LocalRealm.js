@@ -9,7 +9,8 @@ const schema = [
       uuid: 'string?',
       name: 'string?',
       code: 'string?',
-      zone: 'Zone?'
+      zone: 'Zone?',
+      event_id: 'string?'
     }
   },
   {
@@ -19,25 +20,7 @@ const schema = [
       uuid: 'string',
       name: 'string?'
     }
-  },
-  // {
-  //   name: 'Certificates',
-  //   primaryKey: 'uuid',
-  //   properties: {
-  //     uuid: 'string',
-  //     title: 'string?',
-  //     date_expire: 'date?',
-  //     img: 'string?',
-  //     qr: 'string?',
-  //     status: 'string?',
-  //     description: 'string?',
-  //     quantity: 'int?',
-  //     code: 'string?',
-  //     odoo_id: 'int',
-  //     odooid: 'int?'
-
-  //   }
-  // }
+  }
 ];
 
 const realmOptions = {

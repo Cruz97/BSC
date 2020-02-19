@@ -82,6 +82,7 @@ const styleItem = StyleSheet.create({
         marginHorizontal: '3%',
         marginVertical: '10%',
         borderRadius: 10,
+        overflow: 'hidden',
         //paddingBottom: 25,
         //flex:1
     },
@@ -103,7 +104,9 @@ const styleItem = StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 15,
         
-        height: 120,
+        flex:1,
+        paddingBottom:20,
+        
         backgroundColor: '#ffff4d'
     },
     boxDate:{
@@ -132,6 +135,7 @@ const styleItem = StyleSheet.create({
         //fontWeight: 'bold',
         fontStyle: 'italic',
         color: '#000',
+        marginRight: '3%'
         //textAlign: 'center'
     },
     boxButtons:{

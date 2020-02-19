@@ -16,35 +16,6 @@ import { myTheme } from '../assets/styles/Theme'
 // import QRCodeScanner from 'react-native-qrcode-scanner';
 // import { RNCamera as Camera } from 'react-native-camera';
 
-
-//NFC.initialize()
-//const appcustom = Database.CloudDB.getApp()
-
-// NFC.initialize()
-
-//                     NFC.addListener('scan',
-//                     (value)=>{
-//                         var status = true;
-//                         var code = value.scanned;
-//                         var objStatus = mainApp.getStatusCode(code);
-//                         alert(JSON.stringify(value,null,4))
-//                         // if(objStatus){
-//                         //     var newData = {
-//                         //         uuid: objStatus.uuid,
-//                         //         status: true
-//                         //     }
-//                         //     if(!objStatus.status) mainApp.updateObject('Parking',newData)
-//                         //     else {alert('Ya usado'), status = false}
-//                         // }
-//                         // else{
-//                         //     status = false,
-//                         //     code = ""
-//                         // }
-   
-//                         // this.setState({text: code, status})
-//                         //alert(JSON.stringify(value,null,4))
-//                     }, 
-//                     ()=>{alert('ocurrio algo')}) 
                     
 
 class Home extends Component {
@@ -55,20 +26,17 @@ class Home extends Component {
 
     constructor(props){
         super(props);
-        //alert(JSON.stringify(props,null,4))
-        //const {navigation } = this.props;
-        //alert(JSON.stringify(navigation))
-        //const user = mainApp.user;
-        const events = [...Database.CloudDB.searchAll('Event')];
-        const last_event = events[events.length-1];
+        //const events = [...Database.CloudDB.searchAll('Event')];
+        //const last_event = events[events.length-1];
         //alert(JSON.stringify(last_event,null,4))
-        const event = Database.CloudDB.searchObject('Event', `uuid = '${last_event.uuid}'`);
+        //const event = Database.CloudDB.searchObject('Event', `uuid = '${last_event.uuid}'`);
         //alert(JSON.stringify(event,null,4))
         let objLocal = Database.LocalDB.get('User',1);
-        //
+        const event = Database.CloudDB.get('Event',objLocal.event_id);
+        
         //alert(JSON.stringify(objLocal,null,4))
         
-        let count = Database.CloudDB.getCount('Log',`user_id.uuid = '${objLocal.uuid}' AND event.uuid = '${last_event.uuid}' AND app_id.uuid = '1' AND zone.uuid = '${objLocal.zone.uuid}' AND status = true`)
+        let count = Database.CloudDB.getCount('Log',`user_id.uuid = '${objLocal.uuid}' AND event.uuid = '${event.uuid}' AND app_id.uuid = '1' AND zone.uuid = '${objLocal.zone.uuid}' AND status = true`)
         
         this.state = {
             contents: [],
@@ -91,7 +59,7 @@ class Home extends Component {
             inputqr: '',
             modalExit: false,
             colorbtn: null,
-            last_event
+            
         }
         
     }
@@ -175,17 +143,20 @@ class Home extends Component {
   var datetime = now.getFullYear()+'/'+(now.getMonth()+1)+'/'+now.getDate(); 
   datetime += ' '+(now.getHours()-5)+':'+now.getMinutes()+':'+now.getSeconds();
                         let log = {
-                            content_id: {"uuid": this.state.last_event.content_id.uuid},
-                            app_id: {"uuid": "1"},
-                            event: {"uuid": this.state.last_event.uuid},
-                            user_id: {"uuid": "1"},
-                            zone: {"uuid": this.state.user.zone.uuid},
+                            event: {"uuid": this.state.event.uuid},
+                            card_code: code,
+                            description: status ? `Acceso Permitido`: `Acceso Denegado`,
+                            date: datetime,
                             status: status,
-                            description: status ? `${code}|Acceso Permitido|${date} `: `${code}|Acceso Denegado|${date}`,
-                            date: datetime
+                            zone: {"uuid": this.state.user.zone.uuid},
+                            user_id: {"uuid": this.state.user.uuid},
+                            app_id: {"uuid": "1"}
+                            
+                            
+                            
                         }
                         Database.CloudDB.create('Log',log)
-                        let count = Database.CloudDB.getCount('Log',`user_id.uuid = '${this.state.user.uuid}' AND event.uuid = '${this.state.last_event.uuid}' AND app_id.uuid = '1' AND zone.uuid = '${this.state.zone}' AND status = true`)
+                        let count = Database.CloudDB.getCount('Log',`user_id.uuid = '${this.state.user.uuid}' AND event.uuid = '${this.state.event.uuid}' AND app_id.uuid = '1' AND zone.uuid = '${this.state.zone}' AND status = true`)
                         //alert(count)
                         this.setState({
                             text: code, 
@@ -218,7 +189,6 @@ class Home extends Component {
         try {
           await NfcManager.registerTagEvent();
         } catch (ex) {
-          //alert( 'ex' +ex);
           //NfcManager.unregisterTagEvent().catch(error=>alert(error.message));
         }
       }
@@ -228,7 +198,7 @@ class Home extends Component {
       }
 
     render() {
-        this._test()
+        
         return (
             <ScrollView style={style.main} >
                 <AlertCustom 
@@ -310,7 +280,7 @@ class Home extends Component {
                 </View>
 
 
-                 <AppContentItem data={this.state.event.content_id}  />
+                 <AppContentItem data={this.state.event}  />
 
 
                  <View style={style.boxbtnqr}>

@@ -99,11 +99,9 @@ getCount(schema, query){
 
   initTranslate(){
     let dic = Database.CloudDB.search('Translate', `app_id.uuid = '1' and language.uuid = '2'`);
-    //alert(JSON.stringify(dic,null,4))
     let newdic = {};
     dic.map((x)=>{
-      //Create object for dicctionary of type { section: { label : value }}
-        if(!newdic[x.section]){
+      if(!newdic[x.section]){
           newdic[x.section] = {};
         }
         newdic[String(x.section)][String(x.label)] = x.value;
@@ -124,10 +122,7 @@ getCount(schema, query){
        console.warn('Translation <' + key + '> missing');
        return (l.charAt(0).toUpperCase() + l.slice(1)).replace(/_+/g, ' ');
    }
-   //alert(JSON.stringify(this.I18N_DB))
    return this.I18N_DB[s][l];
-    //alert(this.realm)
-    //return this.realm.objectForPrimaryKey('AppCustom', '1');
   }
 
 
@@ -155,4 +150,3 @@ const Database = {
 
 export default Database;
 
-// 'realms://DemoBSCdev.us1a.cloud.realm.io/dev3'

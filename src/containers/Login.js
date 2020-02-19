@@ -8,8 +8,11 @@ import mainApp from '../../global/AppWrapper'
 import Database from '../../database'
 //import QRCode from 'react-native-qrcode-svg';
 
+
+
 export class Login extends Component {
 
+  
     static navigationOptions = {
         header: null,
     }
@@ -24,13 +27,6 @@ export class Login extends Component {
         }
     }
 
-    // componentDidMount(){
-    //     let objLocal = mainApp.getUserLocal(1);
-    //     //alert(JSON.stringify(objLocal))
-    //     if(objLocal) this.props.navigation.navigate('StackApp')
-
-    // }
-
     onChangeText = (text) => {
 
       let reg = /([^0-9])/g.test(text)
@@ -42,19 +38,8 @@ export class Login extends Component {
 
     onValidate = () => {
         let input = this.state.input
-        // const {navigation} = this.props;
-        // const input = navigation.getParam('input',null)
-
-        
-
         if(input !== ''){
-            //let objLocal = mainApp.getUserLocal(1);
-            //let objLocal = {}
-            //if(objLocal) this.props.navigation.navigate('App')
-            //else{
               let objResp = Database.CloudDB.searchObject('User', `code = '${input}'`);
-        //alert(JSON.stringify(objResp,null,4))
-
               if(objResp){
                   let newObjLocal = {
                     uid: 1,
@@ -64,125 +49,55 @@ export class Login extends Component {
                     zone: {
                       uuid: objResp.zone.uuid,
                       name: objResp.zone.name
-                    }
+                    },
+                    event_id: objResp.event.uuid
                   }
 
               Database.LocalDB.create('User',newObjLocal)
-              //mainApp.setUser(objResp);
               this.props.navigation.navigate('StackApp')
           }
           else{
+            this.Input.focus();
             Alert.alert('ID Incorrecto','Ingrese un ID válido')
             this.setState({input: ''})
             this.props.navigation.navigate('Auth')
-              //alert('Codigo incorrecto');
-              //this.setState({showCamera: false,input: ''})
           }
-
-        //}
-
 
           }
           else{
+            this.Input.focus();
               Alert.alert('ID Requerido','Por favor ingrese su ID')
-            // let objLocal1 = mainApp.getUserLocal(1);
-            // if(objLocal1) this.props.navigation.navigate('App')
-            // else this.props.navigation.navigate('Auth')
-            //this.props.navigation.navigate('LoginGuard')
+
           }
-      //this.props.navigation.navigate('Home',{input: this.state.input});
-        // let input = this.state.input;
-
-        // let objLocal = mainApp.getUserLocal(1);
-        
-        // if(objLocal) this.props.navigation.navigate('App')
-        // else{
-        //   let objResp = mainApp.getObject('User', `code = '${input}'`);
-        // //alert(JSON.stringify(objResp,null,4))
-
-        //   if(objResp){
-        //       let newObjLocal = {
-        //         uid: 1,
-        //         uuid: objResp.uuid,
-        //         name: objResp.name,
-        //         code: objResp.code,
-        //         zone: {
-        //           uuid: objResp.zone.uuid,
-        //           name: objResp.zone.name
-        //         }
-        //       }
-
-        //       mainApp.local.create('User',newObjLocal)
-
-        //       mainApp.setUser(objResp);
-        //       this.props.navigation.navigate('App')
-        //   }
-        //   else{
-        //       alert('Codigo incorrecto');
-        //       this.setState({showCamera: false,input: ''})
-        //   }
-
-        // }
-
-
-        
     }
 
     onSuccess = (e) => {
         if(e.type === 'QR_CODE'){
-          
             this.setState({
                 input: e.data,
                 showCamera: false,
             })
-        }
-        //alert(JSON.stringify(e,null,4))
-        
+        }        
       }
-      // componentDidMount(){
-      //   QRCodeScanner.prototype._setScanning(false)
-      // }
+
+      componentDidMount(){
+        this.Input.focus(); 
+      }
+
 
     render() {
-        //QRCodeScanner
         return (
-            // <View style={style.main} >
-            <ImageBackground
 
+            <ImageBackground
               source={require('../assets/img/background.jpg')}
-              
               resizeMode='cover' 
               style={{
                 width: '100%', 
                 height: '100%', 
-                //display: 'none',
                 flex: 1, 
                 backgroundColor: '#000'}}
             >
-                 <View style={{flex:1, display: this.state.showCamera ? 'flex' : 'none'}}>
-               {/* <QRCodeScanner
 
-               reactivate={true}
-                    //cameraStyle={{display: 'none'}}
-                    //fadeIn={false}
-                    
-                    onRead={this.onSuccess}
-                    flashMode={Camera.Constants.FlashMode.auto}      
-                    // topContent={
-                    //   <Text style={styles.centerText}>
-                    //     Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text> on your computer and scan the QR code.
-                    //   </Text>
-                    // }
-                    
-                    bottomContent={
-                    <TouchableOpacity style={style.buttonTouchable}
-                        onPress={()=>this.setState({showCamera: false, input: ''})}
-                    >
-                        <Text style={style.buttonText}>Cancelar</Text>
-                    </TouchableOpacity>
-                    }
-                /> */}
-               </View>
                  <View style={[style.boxlogo,{display: !this.state.showCamera ? 'flex' : 'none'}]}>
                         <Image source={
                           require('../assets/img/icon.png')
@@ -193,6 +108,8 @@ export class Login extends Component {
                 value={this.state.input}
                 onChangeText={this.onChangeText.bind(this)}
                 placeholder='Ingrese su ID'
+                ref={(input) => { this.Input = input; }} 
+                autoFocus={true}
                 maxLength={15}
                 placeholderTextColor='#000'
                 //autoFocus={true}
