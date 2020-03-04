@@ -152,8 +152,6 @@ class Home extends Component {
                             user_id: {"uuid": this.state.user.uuid},
                             app_id: {"uuid": "1"}
                             
-                            
-                            
                         }
                         Database.CloudDB.create('Log',log)
                         let count = Database.CloudDB.getCount('Log',`user_id.uuid = '${this.state.user.uuid}' AND event.uuid = '${this.state.event.uuid}' AND app_id.uuid = '1' AND zone.uuid = '${this.state.zone}' AND status = true`)
@@ -168,6 +166,12 @@ class Home extends Component {
                             count,
                             colorbtn
                         })
+
+                        setTimeout(()=>{
+                            this.setState({
+                                modalVisible: false
+                            })
+                        },2000)
         //NfcManager.setAlertMessageIOS('I got your tag!');
         });
     }catch(ex){
@@ -198,7 +202,7 @@ class Home extends Component {
       }
 
     render() {
-        
+        this._test()
         return (
             <ScrollView style={style.main} >
                 <AlertCustom 

@@ -29,6 +29,35 @@ export class Loading extends Component {
             let configObj = user.createConfiguration(configuration);
             Realm.open(configObj).then(realm => {
                 Database.CloudDB = new RealmObject(realm);
+
+
+                // let users = [...Database.CloudDB.searchAll('User')];
+                // users.map((x)=>{
+                //   let authUser = config.authUrl;
+                //   let creds = Realm.Sync.User.register(
+                //     authUrl, x.uuid, x.code
+                //   ).catch(
+                //     (error) => {alert(JSON.stringify(error,null,4))},
+                //     (user) => {
+
+                //       // const configurationUser = {
+                //       //   sync: {
+                //       //     fullSynchronization: true,
+                //       //     url: 'realms://demobsc.us1a.cloud.realm.io/'+x.uuid+'/MyRealm',
+                //       //   },
+                //       //   schema,
+                //       // };
+
+                //       // let configUser = user.createConfiguration(configurationUser);
+                      
+                //     }
+                //     )
+
+                // })
+
+
+
+
                 let objLocal = Database.LocalDB.get('User',1);
                 if(objLocal) this.props.navigation.navigate('StackApp')
                 else this.props.navigation.navigate('Auth')

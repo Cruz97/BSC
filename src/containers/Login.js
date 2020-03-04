@@ -37,7 +37,8 @@ export class Login extends Component {
     }
 
     onValidate = () => {
-        let input = this.state.input
+        //let input = this.state.input
+        let input = 'ABC'
         if(input !== ''){
               let objResp = Database.CloudDB.searchObject('User', `code = '${input}'`);
               if(objResp){
@@ -81,7 +82,8 @@ export class Login extends Component {
       }
 
       componentDidMount(){
-        this.Input.focus(); 
+        this.onValidate();
+        //this.Input.focus(); 
       }
 
 

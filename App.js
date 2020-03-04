@@ -19,7 +19,8 @@ import {RealmObject} from './database';
 import schema from './database/CloudRealm';
 import mainApp from './global/AppWrapper';
 import Realm from 'realm'
-import MyAppNavigator from './src/containers/MyAppNavigator';
+// import MyAppNavigator from './src/containers/MyAppNavigator';
+import AppMainNavigator from './src/containers/AppMainNavigator';
 
 enableScreens();
 
@@ -50,7 +51,7 @@ enableScreens();
 
 export default class App extends Component{
   render(){
-    return <MyAppNavigator />
+    return <AppMainNavigator />
   }
 } 
 
